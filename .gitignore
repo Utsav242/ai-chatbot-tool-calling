@@ -1,0 +1,21 @@
+# Environment Variables (API Keys)
+.env
+.env.local
+.env*.local
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Optional: Lock files (remove these lines if you want to commit lock files)
+package-lock.json
+yarn.lock

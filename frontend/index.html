@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI ChatBot - Powered by LLM</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .animate-slideUp {
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .animate-pulse-custom {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-bubble-user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .chat-bubble-ai {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        .clear-btn {
+            transition: all 0.3s ease;
+        }
+
+        .clear-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        #input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+
+<body class="gradient-bg text-white overflow-x-hidden">
+    <!-- Header with gradient and glass effect -->
+    <header class="glass-effect sticky top-0 z-10 backdrop-blur-md">
+        <div class="container mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-xl">
+                    🤖
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold animate-fadeIn">
+                        AI ChatBot
+                    </h1>
+                    <p class="text-xs text-gray-400">Powered by Groq LLM</p>
+                </div>
+            </div>
+            <button id="clear-chat" class="clear-btn px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white">
+                🗑️ Clear Chat
+            </button>
+        </div>
+    </header>
+
+    <!-- Chat Container -->
+    <div class="container mx-auto max-w-4xl pb-40 px-4 pt-6 scroll-smooth" id="chat-container">
+        <!-- Welcome message when no chats -->
+        <div id="welcome-screen" class="flex flex-col items-center justify-center min-h-[60vh] text-center animate-fadeIn">
+            <div class="text-6xl mb-6 animate-pulse-custom">💬</div>
+            <h2 class="text-3xl font-bold mb-3 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                Welcome to AI ChatBot
+            </h2>
+            <p class="text-gray-400 mb-6 max-w-md">
+                Ask me anything! I can search the web, answer questions, and help you with various tasks.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl">
+                <button class="suggestion-btn glass-effect p-4 rounded-xl text-left hover:bg-white/10 transition-all cursor-pointer">
+                    <div class="text-2xl mb-2">🌐</div>
+                    <div class="font-medium">What's trending today?</div>
+                </button>
+                <button class="suggestion-btn glass-effect p-4 rounded-xl text-left hover:bg-white/10 transition-all cursor-pointer">
+                    <div class="text-2xl mb-2">💡</div>
+                    <div class="font-medium">Explain AI</div>
+                </button>
+                <button class="suggestion-btn glass-effect p-4 rounded-xl text-left hover:bg-white/10 transition-all cursor-pointer">
+                    <div class="text-2xl mb-2">🔍</div>
+                    <div class="font-medium">Latest tech news</div>
+                </button>
+                <button class="suggestion-btn glass-effect p-4 rounded-xl text-left hover:bg-white/10 transition-all cursor-pointer">
+                    <div class="text-2xl mb-2">🎨</div>
+                    <div class="font-medium">LLMs Tools</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input Area - Fixed at bottom -->
+    <div class="fixed inset-x-0 bottom-0 flex items-center justify-center bg-gradient-to-t from-[#1a1a2e] via-[#1a1a2e] to-transparent pt-6">
+        <div class="glass-effect p-3 rounded-2xl w-full max-w-3xl mb-5 mx-4 shadow-2xl">
+            <div class="flex items-end gap-3">
+                <textarea 
+                    class="flex-1 resize-none outline-0 bg-neutral-800/50 border border-neutral-700 rounded-xl p-3 text-white placeholder-gray-500 transition-all duration-200" 
+                    id="input"
+                    rows="1" 
+                    placeholder="Type your message... (Press Enter to send)"
+                    maxlength="2000"
+                ></textarea>
+                <button 
+                    id="ask"
+                    class="send-btn px-6 py-3 rounded-xl cursor-pointer text-white font-medium flex items-center gap-2 whitespace-nowrap"
+                >
+                    <span>Send</span>
+                    <span>🚀</span>
+                </button>
+            </div>
+            <div class="flex items-center justify-between mt-2 px-2 text-xs text-gray-500">
+                <span id="char-count">0 / 2000</span>
+                <span>💡 Tip: I can search the web for you!</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
